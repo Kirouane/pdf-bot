@@ -4,9 +4,9 @@ var bodyParser = require('body-parser')
 var api = express()
 api.use(bodyParser.json())
 
-api.post('/hook', function (req, res) {
+api.post('/webhooks/pdf', function (req, res) {
   var signature = req.get('X-PDF-Signature', 'sha1=')
-
+console.log(JSON.stringify(req.body));
   var bodyCrypted = require('crypto')
     .createHmac('sha1', '12345')
     .update(JSON.stringify(req.body))
@@ -22,6 +22,6 @@ api.post('/hook', function (req, res) {
   res.status(204).send()
 })
 
-api.listen(3001, function() {
+api.listen(3005, function() {
   console.log('Listening to port 3001')
 })

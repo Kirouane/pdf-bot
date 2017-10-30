@@ -77,3 +77,54 @@ describe('api: POST /', function () {
       })
   })
 })
+
+describe('api: POST /storage', function () {
+    var api
+    beforeEach(function(){
+        api = createApi(function(){}, {
+            token: '1234'
+        })
+    })
+
+    it('should return 401 if no token is given', function(done) {
+        request(api)
+            .post('/storage')
+            .expect(401, done)
+    })
+
+    it('should return 401 if invalid token is give', function (done) {
+        request(api)
+            .post('/storage')
+            .set('Authorization', 'Bearer test')
+            .expect(401, done)
+    })
+
+    it('should return 401 if no storage', function (done) {
+        request(api)
+            .post('/storage')
+            .set('Authorization', 'Bearer 1234')
+            .send({})
+            .expect(403, done)
+    })
+
+    it('should returns the content of pdf file', function (done) {
+
+        var api = createApi(function(){}, {
+            token: '1234'
+        })
+
+        const fs = require('fs');
+        fs.writeFileSync('test.txt', 'File content')
+        request(api)
+            .post('/storage')
+            .set('Authorization', 'Bearer 1234')
+            .send({"local":"test.txt"})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) return done(err)
+                done()
+                fs.unlinkSync('test.txt');
+            });
+    })
+})
+
