@@ -14,6 +14,8 @@ function ping (job, options) {
     throw new Error('You need to supply a secret for your webhooks')
   }
 
+
+
   var requestOptions = options.requestOptions || {}
 
   var headerOptions = requestOptions.headers || {}
