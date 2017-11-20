@@ -10,7 +10,8 @@ var job = {
   },
   storage: {
     local: 'something.pdf'
-  }
+  },
+  content: 'test'.toString('base64')
 }
 
 describe('webhook', function() {
@@ -18,13 +19,17 @@ describe('webhook', function() {
     secret: '1234',
     url: 'http://localhost/hook'
   }
-  var fetchStub, promise, webhook
+  var fetchStub, promise, webhook, fsStub;
 
   beforeEach(function() {
     promise = new Promise(resolve => resolve({}))
     fetchStub = sinon.stub().returns(promise)
+    fsStub = {
+        readFileSync : sinon.stub().returns('test')
+    };
     webhook = proxyquire('../src/webhook', {
-      'node-fetch': fetchStub
+      'node-fetch': fetchStub,
+      'fs' : fsStub
     })
   })
 
