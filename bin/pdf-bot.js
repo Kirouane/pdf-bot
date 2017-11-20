@@ -330,12 +330,18 @@ program
           queue.setIsBusy(false)
           process.exit(0)
         } else {
-          var chunk = chunks.shift()
-          console.log('Running chunk %s, %s chunks left', k, chunks.length)
+          try {
+              var chunk = chunks.shift()
+              console.log('Running chunk %s, %s chunks left', k, chunks.length)
 
-          var promises = []
-          for(var i in chunk) {
-            promises.push(processJob(chunk[i], clone(configuration), false))
+              var promises = []
+              for(var i in chunk) {
+                  promises.push(processJob(chunk[i], clone(configuration), false))
+              }
+          } catch (err) {
+              console.log(err)
+              queue.setIsBusy(false)
+              process.exit(1)
           }
 
           Promise.all(promises)
