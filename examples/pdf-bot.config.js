@@ -6,9 +6,7 @@ module.exports = {
     },
     // html-pdf-chrome options
     generator: {
-        completionTrigger: new htmlPdf.CompletionTrigger.Timer(5000),// waits for 1 sec
-        port: 9222,
-        host: "localhost"
+        completionTrigger: new htmlPdf.CompletionTrigger.Timer(5000)// waits for 1 sec
     },
     queue: {
         parallelism : 1

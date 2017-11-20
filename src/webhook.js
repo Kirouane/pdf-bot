@@ -4,6 +4,7 @@ var fetch = require('node-fetch')
 var uuid = require('uuid')
 var error = require('./error')
 var utils = require('./utils')
+var fs = require('fs');
 
 function ping (job, options) {
   if (!options.url || !utils.isValidUrl(options.url)) {
@@ -14,8 +15,6 @@ function ping (job, options) {
     throw new Error('You need to supply a secret for your webhooks')
   }
 
-
-
   var requestOptions = options.requestOptions || {}
 
   var headerOptions = requestOptions.headers || {}
@@ -23,11 +22,14 @@ function ping (job, options) {
   requestOptions.method = 'POST'
   headerOptions['Content-Type'] = 'application/json'
 
+  const data = fs.readFileSync(job.storage.local);
+
   var bodyRaw = {
     id: job.id,
     url: job.url,
     meta: job.meta,
-    storage: job.storage
+    storage: job.storage,
+    content: data.toString('base64')
   }
   var body = JSON.stringify(bodyRaw)
 

@@ -2,13 +2,13 @@ var express = require('express')
 var bodyParser = require('body-parser')
 
 var api = express()
-api.use(bodyParser.json())
+api.use(bodyParser.json({limit: '50mb'}))
 
 api.post('/webhooks/pdf', function (req, res) {
   var signature = req.get('X-PDF-Signature', 'sha1=')
-console.log(JSON.stringify(req.body));
+
   var bodyCrypted = require('crypto')
-    .createHmac('sha1', '12345')
+    .createHmac('sha1', '1234')
     .update(JSON.stringify(req.body))
     .digest('hex')
 

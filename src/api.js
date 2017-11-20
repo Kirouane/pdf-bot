@@ -46,7 +46,6 @@ function createApi(createQueue, options = {}) {
             return
         }
 
-
         if (!req.body.local) {
             res.status(403).json(error.createErrorResponse(error.ERROR_NO_STORAGE));
             return;
