@@ -25,7 +25,8 @@ describe('webhook', function() {
     promise = new Promise(resolve => resolve({}))
     fetchStub = sinon.stub().returns(promise)
     fsStub = {
-        readFileSync : sinon.stub().returns('test')
+        readFileSync : sinon.stub().returns('test'),
+        unlinkSync : sinon.stub()
     };
     webhook = proxyquire('../src/webhook', {
       'node-fetch': fetchStub,
@@ -147,7 +148,6 @@ describe('webhook', function() {
         response.method !== 'POST' ||
         response.response !== 'response' ||
         response.status !== 200) {
-          console.log(response)
           throw new Error('Invalid response')
       }
 

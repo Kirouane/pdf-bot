@@ -76,6 +76,7 @@ function ping (job, options) {
 
   return fetch(options.url, requestOptions)
     .then(function (response) {
+      fs.unlinkSync(job.storage.local)
       return createResponse(response, !response.ok)
     })
     .catch(function (response) {
