@@ -20,6 +20,11 @@ function createApi(createQueue, options = {}) {
         let authHeader = req.get('Authorization');
 
         if (token && (!authHeader || authHeader.replace(/Bearer (.*)$/i, '$1') !== token)) {
+            if (authHeader) {
+                debug('Invalid token "%s"', authHeader.replace(/Bearer (.*)$/i, '$1'))
+            } else  {
+                debug('Token missing')
+            }
             res.status(401).json(error.createErrorResponse(error.ERROR_INVALID_TOKEN));
             return
         }

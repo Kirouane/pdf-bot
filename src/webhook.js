@@ -28,9 +28,12 @@ function ping (job, options) {
     id: job.id,
     url: job.url,
     meta: job.meta,
-    storage: job.storage,
-    content: data.toString('base64')
+    storage: job.storage
   }
+
+  var bodyToLog = JSON.stringify(bodyRaw)
+
+  bodyRaw.content = data.toString('base64');
   var body = JSON.stringify(bodyRaw)
 
   var signature = generateSignature(body, options.secret)
@@ -47,12 +50,12 @@ function ping (job, options) {
 
   requestOptions.headers = headers
   requestOptions.body = body
-
   debug(
-    'Pinging job ID %s at URL %s with request options %s',
+    'Pinging job ID %s at URL %s with request body %s, headers %s',
     job.id,
     options.url,
-    JSON.stringify(requestOptions)
+    bodyToLog,
+    JSON.stringify(headers)
   )
 
   var sent_at = utils.getCurrentDateTimeAsString()
@@ -61,16 +64,23 @@ function ping (job, options) {
     var status = response.status
 
     return getContentBody(response).then(body => {
-      return {
-        id: requestId,
-        status: response.status,
-        method: requestOptions.method,
-        payload: bodyRaw,
-        response: body,
-        url: options.url,
-        sent_at: sent_at,
-        error: !response.ok
-      }
+        debug(
+            'Pinging response job ID %s at URL %s with body %s',
+            job.id,
+            options.url,
+            JSON.stringify(body)
+        )
+
+        return  {
+            id: requestId,
+            status: response.status,
+            method: requestOptions.method,
+            payload: bodyRaw,
+            response: body,
+            url: options.url,
+            sent_at: sent_at,
+            error: !response.ok
+        }
     })
   }
 
