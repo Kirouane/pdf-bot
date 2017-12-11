@@ -208,8 +208,8 @@ function setIsBusy(db, isBusy) {
 function isBusy(db) {
     const isBusy = db.get('is_busy').value();
 
-    if (isBusy) {
-        return isBusy;
+    if (!isBusy) {
+        return false;
     }
 
     const busyDateTime = db.get('is_busy_datetime').value();
@@ -220,8 +220,8 @@ function isBusy(db) {
 
     const minutes = Math.abs((busyDateTime - new Date()) / 1000 / 60);
 
-    if (minutes > 2) {
-        return true;
+    if (minutes > 5) {
+        return false;
     }
 
     return isBusy
