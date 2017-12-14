@@ -1,8 +1,14 @@
 const htmlPdf = require('html-pdf-chrome');
+const fs = require('fs');
+
 module.exports = {
     api: {
         port: 3003,
-        token: 'api-token'
+        token: 'VFVuhqW7DB',
+        server : {
+            key : fs.readFileSync('/etc/apache2/ssl/carboxservices.dev/star.carboxservices.dev.key'),
+            cert : fs.readFileSync('/etc/apache2/ssl/carboxservices.dev/star.carboxservices.dev.crt')
+        }
     },
     // html-pdf-chrome options
     generator: {
