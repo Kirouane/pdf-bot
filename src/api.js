@@ -70,6 +70,24 @@ function createApi(createQueue, options = {}) {
         res.status(200).json({});
     });
 
+    api.get('/db', function (req, res) {
+        let authHeader = req.get('Authorization');
+
+        if (token && (!authHeader || authHeader.replace(/Bearer (.*)$/i, '$1') !== token)) {
+            if (authHeader) {
+                debug('Invalid token "%s"', authHeader.replace(/Bearer (.*)$/i, '$1'))
+            } else  {
+                debug('Token missing')
+            }
+            res.status(401).json(error.createErrorResponse(error.ERROR_INVALID_TOKEN));
+            return
+        }
+
+        const queue = createQueue();
+        res.contentType("application/json");
+        res.status(200).json(queue.db);
+    });
+
     return api
 }
 

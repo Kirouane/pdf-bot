@@ -4,7 +4,7 @@ const fs = require('fs');
 module.exports = {
     api: {
         port: 3003,
-        token: 'VFVuhqW7DB',
+        token: 'api-token',
         server : {
             key : fs.readFileSync('/etc/apache2/ssl/carboxservices.dev/star.carboxservices.dev.key'),
             cert : fs.readFileSync('/etc/apache2/ssl/carboxservices.dev/star.carboxservices.dev.crt')

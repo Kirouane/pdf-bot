@@ -20,6 +20,7 @@ function createQueue(path, options = {}, initialValue = []) {
     }
 
     return {
+        db : db,
         addToQueue: createQueueMethod(addToQueue),
         attemptPing: createQueueMethod(attemptPing),
         getById: createQueueMethod(getById),
@@ -175,6 +176,7 @@ function purge(db, failed = false, pristine = false, maxTries = 5) {
     var query = db.get('queue').slice(0)
 
     query = query.filter(function (job) {
+
         // failed jobs
         if (failed && job.completed_at === null && job.generations.length >= maxTries) {
             return true

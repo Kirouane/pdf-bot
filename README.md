@@ -273,7 +273,7 @@ meta | object | | Optional meta data object to send back to the webhook url
 #### Example
 
 ```bash
-curl -X POST -H 'Authorization: Bearer api-token' -H 'Content-Type: application/json' http://pdf-bot.com/ -d '
+curl -k -X POST -H 'Authorization: Bearer api-token' -H 'Content-Type: application/json' https://localhost:3003 -d '
   {
     "url":"https://esbenp.github.io",
     "meta":{
