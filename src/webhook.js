@@ -5,6 +5,7 @@ var uuid = require('uuid')
 var error = require('./error')
 var utils = require('./utils')
 var fs = require('fs');
+var clone = require('lodash.clonedeep');
 
 function ping (job, options) {
   if (!options.url || !utils.isValidUrl(options.url)) {
@@ -31,7 +32,9 @@ function ping (job, options) {
     storage: job.storage
   }
 
-  var bodyToLog = JSON.stringify(bodyRaw)
+  var bodyRawToStore = clone(bodyRaw) ;
+
+  var bodyToLog = JSON.stringify(bodyRawToStore)
 
   bodyRaw.content = data.toString('base64');
   var body = JSON.stringify(bodyRaw)
@@ -75,7 +78,7 @@ function ping (job, options) {
             id: requestId,
             status: response.status,
             method: requestOptions.method,
-            payload: bodyRaw,
+            payload: bodyRawToStore,
             response: body,
             url: options.url,
             sent_at: sent_at,
