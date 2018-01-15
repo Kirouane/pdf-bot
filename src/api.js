@@ -67,6 +67,7 @@ function createApi(createQueue, options = {}) {
     });
 
     api.get('/health-check', function (req, res) {
+        const queue = createQueue();
         res.status(200).json({});
     });
 
